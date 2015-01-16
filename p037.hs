@@ -1,15 +1,14 @@
 import Data.List
+import HelperLib
 
-isPrime n = go 2
-    where
-        go d
-            | d*d > n = True
-            | n `rem` d == 0 = False
-            | otherwise = go (d+1)
+truncPrime :: (Integral a, Show a) => (String -> String) -> a -> Bool
+truncPrime f x
+    | isPrime x = if nextX == [] then True else truncPrime f $ read nextX
+    | otherwise = False
+    where strX = show x
+          nextX = f strX
 
-primes = filter isPrime [2..999999]
+truncLR x = truncPrime tail x
+truncRL x = truncPrime init x
 
-truncL :: Int -> Bool
-truncL x = if isPrime x
-           then 
-           else False
+main = print $ sum $ take 11 $ filter (\x -> (truncLR x) && (truncRL x)) ([10..] :: [Int])
