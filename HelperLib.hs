@@ -1,8 +1,17 @@
 module HelperLib where
 
+import Data.List
+
 merge :: (Ord a) => [a] -> [a] -> [a]
 merge xs@(x:xt) ys@(y:yt) = 
   case compare x y of
+    LT -> x : (merge xt ys)
+    EQ -> x : (merge xt yt)
+    GT -> y : (merge xs yt)
+
+mergeBy :: (Ord a) => (a -> a -> Ordering) -> [a] -> [a] -> [a]
+mergeBy f xs@(x:xt) ys@(y:yt) = 
+  case f x y of
     LT -> x : (merge xt ys)
     EQ -> x : (merge xt yt)
     GT -> y : (merge xs yt)
@@ -14,12 +23,17 @@ diff xs@(x:xt) ys@(y:yt) =
         EQ -> diff xt yt
         GT -> diff xs yt
 
-primes, nonprimes :: Integral a => [a]
+fermatTest :: (Integral a) => a -> Bool
+fermatTest n = null [x | x <- ps, x < n, n `rem` x == 0]
+    where ps = [2,3,5,7,11,13,17,19,23,29,31,37,41,
+                43,47,53,59,61,67,71,73,79,83,89,97] 
+
+primes, nonprimes :: (Integral a) => [a]
 primes    = [2, 3, 5] ++ (diff [7, 9 ..] nonprimes) 
 nonprimes = foldr1 f $ map g $ tail primes
   where 
     f (x:xt) ys = x : (merge xt ys)
-    g p         = [ n * p | n <- [p, p + 2 ..]]
+    g p         = [ n * p | n <- [p, p + 2 ..] ]
 
 iSqrt :: Integral a => a -> a
 iSqrt x = floor $ sqrt $ fromIntegral x
