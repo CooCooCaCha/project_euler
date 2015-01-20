@@ -6,6 +6,5 @@ for x in range(100, 1000):
         if(result > cur):
             if(str(result) == str(result)[::-1]):
                 cur = result
-                print str(x) + ' x ' + str(y)
 
-print 'Answer: ' + str(cur)
+print( 'Answer: ' + str(cur) )
