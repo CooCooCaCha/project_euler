@@ -3,9 +3,9 @@ import Data.List
 
 primeFactors x = map (\x -> foldr (*) 1 x ) $ group $ primeDivisors x
 
-isDistinct (x:y:z:w:xs)
+distinctConsecutive (x:y:z:w:xs)
     | isDiff && isLongEnough == True = x
-    | otherwise = isDistinct (y:z:w:xs)
+    | otherwise = distinctConsecutive (y:z:w:xs)
     where pfX = primeFactors x
           pfY = primeFactors y
           pfZ = primeFactors z
@@ -14,4 +14,4 @@ isDistinct (x:y:z:w:xs)
           isLongEnough = (length combined) == 16
           isDiff = (length combined) == (length . group . sort) combined
 
-main = print $ isDistinct [2..]
+main = print $ distinctConsecutive [2..]
