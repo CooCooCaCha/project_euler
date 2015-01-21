@@ -57,3 +57,7 @@ divisors n = 1 : filter ((==0) . rem n) [2..(n `div` 2)]
 fib :: Integral a => [a]
 fib = 1 : 1 : zipWith (+) fib (tail fib)
 
+primeDivisors :: Int -> [Int]
+primeDivisors 1 = []
+primeDivisors x = factor : primeDivisors (x `quot` factor)
+    where factor = head $ filter (\y -> x `rem` y == 0) primes 
