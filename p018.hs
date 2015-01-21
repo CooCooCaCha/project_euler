@@ -1,27 +1,38 @@
-triangle = [[3],[7,4],[2,4,6],[8,5,9,3]]
+import Data.List
 
-1. Start at first row
-2. For each row pick the best path from the previous row.
-3. Once at the end work way back to the beginning.
+--triangle = [[3],[7,4],[2,4,6],[8,5,9,3]]
 
-[95,64]
-[[95],[95,64],[64]]
+triangle = 
+    [ [75]
+    , [95,64]
+    , [17,47,82]
+    , [18,35,87,10]
+    , [20,04,82,47,65]
+    , [19,01,23,75,03,34]
+    , [88,02,77,73,07,63,67]
+    , [99,65,04,28,06,16,70,92]
+    , [41,41,26,56,83,40,80,70,33]
+    , [41,48,72,33,47,32,37,16,94,29]
+    , [53,71,44,65,25,43,91,52,97,51,14]
+    , [70,11,33,28,77,73,17,78,39,68,17,57]
+    , [91,71,52,38,17,14,91,43,58,50,27,29,48]
+    , [63,66,04,68,89,53,67,30,73,16,69,87,40,31]
+    , [04,62,98,27,23,09,70,98,73,93,38,53,60,04,23]
+    ]
 
-[17,47,82]
-[17,17,47,47,82,82]
-[[17],[17,47],[47,82],[82]]
+tuplePair :: [a] -> [(a,a)]
+tuplePair (x:[]) = [(x,x)]
+tuplePair (x:y:xs) = (x,y) : tuplePair (y:xs)
 
-expand :: [Int] -> [Int]
-expand [] = []
-expand (x:xs) = x : x : expand xs
+pickOption :: Int -> (Int, Int) -> Int
+pickOption x options = maximum [first, second]
+    where first  = x + (fst options)
+          second = x + (snd options)
 
-comb :: [Int] -> [[Int]]
-comb (x:y:xs) = 
+process :: [[Int]] -> [Int]
+process (x:[])   = x
+process (x:y:xs) = process (calcRow : xs)
+    where expandedRow = tuplePair $ (head x) : x
+          calcRow     = zipWith pickOption y expandedRow
 
-bestFromPrev :: [Int] -> [Int] -> [Int]
-bestFromPrev cur prev = 
-
-maxPath :: [[Int]] -> [Int]
-maxPath x = head x
-
-main = print $ maxPath triangle
+main = print $ maximum $ process triangle
